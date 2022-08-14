@@ -1,0 +1,18 @@
+# Ignore the files for prettier
+coverage
+node_modules
+lib
+*.md
+*.npmrc
+dist
+build
+package-lock.json
+
+config/
+scripts
+
+src/react-app-env.d.ts
+src/reportWebVitals.ts
+src/setupTests.ts
+
+.eslintcache
