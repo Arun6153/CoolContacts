@@ -2,14 +2,16 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 export const ContactItem = (props: any) => {
-   const { contact } = props;
+   const { contact, navigation } = props;
    const touched = () => {
-      console.log('touches');
+      navigation.navigate('contact-form', { contactDetails: { contact, isEdit: true } });
    };
 
    return (
-      <View style={ContactItemStyles.contactItem} onTouchEndCapture={() => touched()}>
-         <Text>{`${contact?.firstName} ${contact?.lastName}`}</Text>
+      <View style={ContactItemStyles.contactItem}>
+         <Text
+            onPress={() => touched()}
+         >{`${contact?.firstName} ${contact?.lastName}`}</Text>
       </View>
    );
 };

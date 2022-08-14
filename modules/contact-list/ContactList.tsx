@@ -25,7 +25,9 @@ export const ContactList = ({ navigation }: any) => {
    }, []);
 
    const addNewContact = () => {
-      navigation.navigate('contact-form');
+      navigation.navigate('contact-form', {
+         contactDetails: { contact: null, isEdit: false },
+      });
    };
 
    return (
@@ -38,11 +40,9 @@ export const ContactList = ({ navigation }: any) => {
                   Contacts
                </Text>
             </View>
-            <View
-               onTouchEndCapture={() => addNewContact()}
-               style={ContactListStyles.mainLabelViewColumn}
-            >
+            <View style={ContactListStyles.mainLabelViewColumn}>
                <Text
+                  onPress={() => addNewContact()}
                   style={[
                      ContactListStyles.mainLabelColumn,
                      ContactListStyles.mainSubLabel,
@@ -56,7 +56,7 @@ export const ContactList = ({ navigation }: any) => {
          <SafeAreaView style={ContactListStyles.safeView}>
             <ScrollView>
                {contacts?.map?.((ele: Contact, index) => (
-                  <ContactItem key={index} contact={ele} />
+                  <ContactItem key={index} contact={ele} navigation={navigation} />
                ))}
             </ScrollView>
          </SafeAreaView>
