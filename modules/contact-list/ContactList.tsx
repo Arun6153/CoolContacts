@@ -11,7 +11,7 @@ import {
 import { ContactItem } from './contact/Contact';
 import { getContactList } from './ContactList.service';
 
-export const ContactList = () => {
+export const ContactList = ({ navigation }: any) => {
    const [contacts, setContacts] = useState<Contact[]>([]);
    const isData = !!contacts;
 
@@ -24,14 +24,13 @@ export const ContactList = () => {
       getContacts();
    }, []);
 
-   const addNewContact = () => {};
+   const addNewContact = () => {
+      navigation.navigate('contact-form');
+   };
 
    return (
       <View style={ContactListStyles.mainContainer}>
          <View style={ContactListStyles.mainLabelViewRow}>
-            <View style={ContactListStyles.mainLabelViewColumn}>
-               <Text style={ContactListStyles.mainLabelColumn} />
-            </View>
             <View style={ContactListStyles.mainLabelViewColumn}>
                <Text
                   style={[ContactListStyles.mainLabelColumn, ContactListStyles.mainLabel]}
@@ -71,24 +70,23 @@ const ContactListStyles = StyleSheet.create({
    mainContainer: {
       flex: 1,
       padding: 10,
+      backgroundColor: 'white',
    },
    mainLabelViewRow: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      justifyContent: 'flex-end',
+      justifyContent: 'space-between',
       flex: 1,
       marginHorizontal: 20,
-      marginBottom: 10,
    },
    mainLabelViewColumn: {
-      flexDirection: 'column-reverse',
+      flexDirection: 'column',
+      justifyContent: 'center',
       flexWrap: 'wrap',
       height: '100%',
       flex: 1,
    },
    mainLabelColumn: {
-      textAlign: 'center',
-      paddingVertical: 8,
       width: '100%',
       fontFamily: 'Arial',
    },

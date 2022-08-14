@@ -1,18 +1,19 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, Text } from "react-native";
-import { ContactList } from "./modules/contact-list/ContactList";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, View } from 'react-native';
+import { Navigation } from './common/navigation/Navigation';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <ContactList />
-    </View>
-  );
+   return (
+      <View style={styles.container}>
+         <StatusBar style="auto" />
+         <Navigation />
+      </View>
+   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+   container: {
+      flex: 1,
+      backgroundColor: 'white',
+   },
 });
