@@ -1,3 +1,4 @@
+import { Contact } from 'expo-contacts';
 import React, { useState, useEffect } from 'react';
 import {
    StyleSheet,
@@ -11,6 +12,7 @@ import {
    View,
    Image,
 } from 'react-native';
+import { contactDetailsSubmit } from './ContactForm.service';
 import { ContactFormTypes } from './ContactForm.types';
 
 export const ContactForm = ({ route, navigation }: any) => {
@@ -27,14 +29,34 @@ export const ContactForm = ({ route, navigation }: any) => {
    useEffect(() => {
       if (contactDetails.isEdit) {
          setTitle('Edit Contact');
-         navigation.setOptions({ title });
+         navigation.setOptions({ title: 'Edit Contact' });
+         updateFields();
       } else {
          setTitle('Add Contact');
-         navigation.setOptions({ title });
+         navigation.setOptions({ title: 'Add Contact' });
       }
    }, []);
 
-   const onDetailSubmit = () => {
+   const updateFields = () => {
+      const data = contactDetails.contact as Contact;
+
+      setFirstName(data?.firstName);
+      setLastName(data?.lastName);
+
+      if (data?.phoneNumbers) {
+         setPhoneNo(data?.phoneNumbers[0]?.number);
+      }
+      if (data?.emails) {
+         setAddEmail(true);
+         setEmail(data?.emails[0].email);
+      }
+      if (data?.company) {
+         setAddOrganisation(true);
+         setOrg(data?.company);
+      }
+   };
+
+   const onDetailSubmit = async () => {
       let formDetails = {} as ContactFormTypes;
 
       formDetails.firstName = firstName!;
@@ -43,7 +65,15 @@ export const ContactForm = ({ route, navigation }: any) => {
       formDetails.organisation = org;
       formDetails.emailAddress = email;
 
-      console.log(formDetails);
+      const isSubmitted = await contactDetailsSubmit(
+         contactDetails.isEdit,
+         formDetails,
+         contactDetails
+      );
+
+      if (isSubmitted) {
+         navigation.navigate('contact-list');
+      }
    };
 
    return (
