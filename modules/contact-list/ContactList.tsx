@@ -8,6 +8,7 @@ import {
    SafeAreaView,
    RefreshControl,
 } from 'react-native';
+import { SearchBar } from '../../common/widgets/search-bar/SearchBar';
 import { ContactItem } from './contact/ContactItem';
 import { getContactList } from './ContactList.service';
 
@@ -23,15 +24,15 @@ export const ContactList = ({ route, navigation }: any) => {
 
    useEffect(() => {
       if (_routes?.refresh) {
-         getContacts();
+         getContacts(false);
       }
    }, [_routes?.refresh]);
 
-   const getContacts = async () => {
-      setRefreshing(true);
+   const getContacts = async (isRefresh = true) => {
+      if (isRefresh) setRefreshing(isRefresh);
       const data: Contact[] | any = await getContactList();
       setContacts(data);
-      setRefreshing(false);
+      if (isRefresh) setRefreshing(!isRefresh);
    };
 
    const addNewContact = () => {
@@ -63,6 +64,10 @@ export const ContactList = ({ route, navigation }: any) => {
             </View>
          </View>
 
+         <View style={{ flex: 1 }}>
+            <SearchBar />
+         </View>
+
          <SafeAreaView style={ContactListStyles.safeView}>
             <ScrollView
                refreshControl={
@@ -76,9 +81,8 @@ export const ContactList = ({ route, navigation }: any) => {
                   <ContactItem key={index} contact={ele} navigation={navigation} />
                ))}
             </ScrollView>
+            {!isData && <Text>No contacts available</Text>}
          </SafeAreaView>
-
-         {!isData && <Text>No contacts available</Text>}
       </View>
    );
 };
@@ -90,11 +94,11 @@ const ContactListStyles = StyleSheet.create({
       backgroundColor: 'white',
    },
    mainLabelViewRow: {
+      marginHorizontal: 20,
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
       flex: 1,
-      marginHorizontal: 20,
    },
    mainLabelViewColumn: {
       flexDirection: 'column',
@@ -113,6 +117,7 @@ const ContactListStyles = StyleSheet.create({
    },
    mainSubLabel: { textAlign: 'right', color: 'grey' },
    safeView: {
-      flex: 7,
+      flex: 10,
+      marginTop: 40,
    },
 });

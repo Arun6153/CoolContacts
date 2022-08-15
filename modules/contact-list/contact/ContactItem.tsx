@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 export const ContactItem = (props: any) => {
    const { contact, navigation } = props;
@@ -8,7 +8,7 @@ export const ContactItem = (props: any) => {
    };
 
    return (
-      <View style={ContactItemStyles.contactItem}>
+      <TouchableOpacity onPress={() => touched()} style={ContactItemStyles.contactItem}>
          <View>
             <Image
                style={{ height: 40, width: 40 }}
@@ -17,11 +17,10 @@ export const ContactItem = (props: any) => {
                }}
             />
          </View>
-         <Text
-            style={ContactItemStyles.contactItemText}
-            onPress={() => touched()}
-         >{`${contact?.firstName} ${contact?.lastName}`}</Text>
-      </View>
+         <Text style={ContactItemStyles.contactItemText}>{`${contact?.firstName} ${
+            contact?.midName ? contact?.midName + ' ' : ''
+         }${contact?.lastName ? contact?.lastName : ''}`}</Text>
+      </TouchableOpacity>
    );
 };
 

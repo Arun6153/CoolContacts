@@ -44,8 +44,6 @@ export const contactDetailsSubmit = async (
          };
          await Contacts.addContactAsync(contact);
       } else {
-         console.log(contactOrig['id']);
-
          const contact: any = {
             [Contacts.Fields.FirstName]: data.firstName,
             [Contacts.Fields.LastName]: data.lastName,
@@ -64,7 +62,6 @@ export const contactDetailsSubmit = async (
 
       return true;
    } catch (err) {
-      console.log(err);
       return false;
    }
 };

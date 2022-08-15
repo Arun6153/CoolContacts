@@ -11,6 +11,7 @@ import {
    TouchableWithoutFeedback,
    View,
    Image,
+   TouchableOpacity,
 } from 'react-native';
 import { contactDetailsSubmit } from './ContactForm.service';
 import { ContactFormTypes } from './ContactForm.types';
@@ -85,9 +86,24 @@ export const ContactForm = ({ route, navigation }: any) => {
             <View style={styles.inner}>
                <View>
                   <Text style={styles.header}>{title}</Text>
-                  {/* {
-                     <Image source={}/>
-                  } */}
+                  <View style={{ flexDirection: 'row' }}>
+                     <TouchableOpacity>
+                        <Image
+                           style={{ height: 40, width: 40, borderRadius: 50 }}
+                           source={{
+                              uri: 'https://www.pngall.com/wp-content/uploads/10/Call-PNG-Picture.png',
+                           }}
+                        />
+                     </TouchableOpacity>
+                     <TouchableOpacity style={{ marginLeft: 10 }}>
+                        <Image
+                           style={{ height: 40, width: 40, borderRadius: 50 }}
+                           source={{
+                              uri: 'https://www.pngkey.com/png/full/203-2036190_trash-icon-recycle-bin-circle-icon.png',
+                           }}
+                        />
+                     </TouchableOpacity>
+                  </View>
                </View>
                <View>
                   <TextInput
@@ -157,7 +173,11 @@ export const ContactForm = ({ route, navigation }: any) => {
                   )}
                </View>
                <View style={styles.btnContainer}>
-                  <Button title="Submit" onPress={() => onDetailSubmit()} />
+                  <Button
+                     color={'white'}
+                     title="Submit"
+                     onPress={() => onDetailSubmit()}
+                  />
                </View>
             </View>
          </TouchableWithoutFeedback>
@@ -177,7 +197,7 @@ const styles = StyleSheet.create({
    },
    header: {
       fontSize: 36,
-      marginBottom: 48,
+      marginBottom: 30,
    },
    textInput: {
       height: 40,
@@ -186,11 +206,16 @@ const styles = StyleSheet.create({
       marginBottom: 36,
    },
    btnContainer: {
-      backgroundColor: 'white',
+      borderWidth: 1,
+      padding: 10,
+      borderRadius: 10,
+      borderColor: '#0d98bd',
+      color: 'white',
+      backgroundColor: '#0d98bd',
       marginTop: 12,
    },
    optionalFields: {
-      color: '#0000EE',
+      color: '#5089e5',
    },
    optionalFieldView: {
       paddingVertical: 5,
