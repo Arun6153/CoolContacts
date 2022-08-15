@@ -68,11 +68,11 @@ export const ContactForm = ({ route, navigation }: any) => {
       const isSubmitted = await contactDetailsSubmit(
          contactDetails.isEdit,
          formDetails,
-         contactDetails
+         contactDetails.contact
       );
 
       if (isSubmitted) {
-         navigation.navigate('contact-list');
+         navigation.navigate('contact-list', { refresh: true });
       }
    };
 

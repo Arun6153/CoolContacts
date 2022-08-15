@@ -44,23 +44,27 @@ export const contactDetailsSubmit = async (
          };
          await Contacts.addContactAsync(contact);
       } else {
-         contactOrig.company = data.organisation;
-         contactOrig.firstName = data.firstName;
-         contactOrig.lastName = data.lastName;
-         if (contactOrig?.emails) {
-            const emails = contactOrig?.emails;
-            emails[0].email = data.emailAddress;
-         }
-         if (contactOrig?.phoneNumbers) {
-            const phoneNumbers = contactOrig?.phoneNumbers;
-            phoneNumbers[0].number = data.phoneNo;
-         }
-         contactOrig.company = data.organisation;
-         await Contacts.updateContactAsync(contactOrig);
+         console.log(contactOrig['id']);
+
+         const contact: any = {
+            [Contacts.Fields.FirstName]: data.firstName,
+            [Contacts.Fields.LastName]: data.lastName,
+            [Contacts.Fields.PhoneNumbers]: [
+               { number: data.phoneNo, digits: data.phoneNo, countryCode: 'IN' },
+            ],
+            [Contacts.Fields.Emails]: [{ email: data.emailAddress, isPrimary: true }],
+            [Contacts.Fields.Company]: data.organisation,
+            id: contactOrig.id,
+            contactType: contactOrig.name,
+            name: contactOrig.contactType,
+         };
+
+         await Contacts.updateContactAsync(contact);
       }
 
       return true;
    } catch (err) {
+      console.log(err);
       return false;
    }
 };

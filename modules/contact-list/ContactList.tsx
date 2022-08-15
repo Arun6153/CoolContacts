@@ -6,23 +6,33 @@ import {
    StyleSheet,
    ScrollView,
    SafeAreaView,
-   StatusBar,
+   RefreshControl,
 } from 'react-native';
-import { ContactItem } from './contact/Contact';
+import { ContactItem } from './contact/ContactItem';
 import { getContactList } from './ContactList.service';
 
-export const ContactList = ({ navigation }: any) => {
+export const ContactList = ({ route, navigation }: any) => {
    const [contacts, setContacts] = useState<Contact[]>([]);
+   const [refreshing, setRefreshing] = useState<boolean>(false);
    const isData = !!contacts;
+   const _routes = route?.params;
 
    useEffect(() => {
-      const getContacts = async () => {
-         const data: Contact[] | any = await getContactList();
-         setContacts(data);
-      };
-
       getContacts();
    }, []);
+
+   useEffect(() => {
+      if (_routes?.refresh) {
+         getContacts();
+      }
+   }, [_routes?.refresh]);
+
+   const getContacts = async () => {
+      setRefreshing(true);
+      const data: Contact[] | any = await getContactList();
+      setContacts(data);
+      setRefreshing(false);
+   };
 
    const addNewContact = () => {
       navigation.navigate('contact-form', {
@@ -54,7 +64,14 @@ export const ContactList = ({ navigation }: any) => {
          </View>
 
          <SafeAreaView style={ContactListStyles.safeView}>
-            <ScrollView>
+            <ScrollView
+               refreshControl={
+                  <RefreshControl
+                     refreshing={refreshing}
+                     onRefresh={() => getContacts()}
+                  />
+               }
+            >
                {contacts?.map?.((ele: Contact, index) => (
                   <ContactItem key={index} contact={ele} navigation={navigation} />
                ))}
