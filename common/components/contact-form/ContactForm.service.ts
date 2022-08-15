@@ -65,3 +65,13 @@ export const contactDetailsSubmit = async (
       return false;
    }
 };
+
+export const deleteContact = async (id: string) => {
+   try {
+      await Contacts.removeContactAsync(id);
+
+      return true;
+   } catch (err) {
+      return false;
+   }
+};

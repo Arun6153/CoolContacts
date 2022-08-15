@@ -12,8 +12,9 @@ import {
    View,
    Image,
    TouchableOpacity,
+   Linking,
 } from 'react-native';
-import { contactDetailsSubmit } from './ContactForm.service';
+import { contactDetailsSubmit, deleteContact } from './ContactForm.service';
 import { ContactFormTypes } from './ContactForm.types';
 
 export const ContactForm = ({ route, navigation }: any) => {
@@ -77,6 +78,14 @@ export const ContactForm = ({ route, navigation }: any) => {
       }
    };
 
+   const deleteContactPopUp = () => {
+      const result = deleteContact(contactDetails?.contact?.id);
+
+      if (!!result) {
+         navigation.navigate('contact-list', { refresh: true });
+      }
+   };
+
    return (
       <KeyboardAvoidingView
          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -86,24 +95,31 @@ export const ContactForm = ({ route, navigation }: any) => {
             <View style={styles.inner}>
                <View>
                   <Text style={styles.header}>{title}</Text>
-                  <View style={{ flexDirection: 'row' }}>
-                     <TouchableOpacity>
-                        <Image
-                           style={{ height: 40, width: 40, borderRadius: 50 }}
-                           source={{
-                              uri: 'https://www.pngall.com/wp-content/uploads/10/Call-PNG-Picture.png',
-                           }}
-                        />
-                     </TouchableOpacity>
-                     <TouchableOpacity style={{ marginLeft: 10 }}>
-                        <Image
-                           style={{ height: 40, width: 40, borderRadius: 50 }}
-                           source={{
-                              uri: 'https://www.pngkey.com/png/full/203-2036190_trash-icon-recycle-bin-circle-icon.png',
-                           }}
-                        />
-                     </TouchableOpacity>
-                  </View>
+                  {contactDetails.isEdit && (
+                     <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity
+                           onPress={() => Linking.openURL(`tel:${phoneNo}`)}
+                        >
+                           <Image
+                              style={{ height: 40, width: 40, borderRadius: 50 }}
+                              source={{
+                                 uri: 'https://www.pngall.com/wp-content/uploads/10/Call-PNG-Picture.png',
+                              }}
+                           />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                           onPress={() => deleteContactPopUp()}
+                           style={{ marginLeft: 10 }}
+                        >
+                           <Image
+                              style={{ height: 40, width: 40, borderRadius: 50 }}
+                              source={{
+                                 uri: 'https://www.pngkey.com/png/full/203-2036190_trash-icon-recycle-bin-circle-icon.png',
+                              }}
+                           />
+                        </TouchableOpacity>
+                     </View>
+                  )}
                </View>
                <View>
                   <TextInput
@@ -150,8 +166,6 @@ export const ContactForm = ({ route, navigation }: any) => {
                         <Text style={styles.optionalFields}>+</Text>
                      </View>
                   )}
-               </View>
-               <View>
                   {isAddOrganisation && (
                      <TextInput
                         placeholder="organisation"
@@ -191,7 +205,7 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
    },
    inner: {
-      padding: 24,
+      padding: 20,
       flex: 1,
       justifyContent: 'space-around',
    },
@@ -203,7 +217,7 @@ const styles = StyleSheet.create({
       height: 40,
       borderColor: '#000000',
       borderBottomWidth: 1,
-      marginBottom: 36,
+      marginBottom: 26,
    },
    btnContainer: {
       borderWidth: 1,
@@ -219,6 +233,7 @@ const styles = StyleSheet.create({
    },
    optionalFieldView: {
       paddingVertical: 5,
+      marginVertical: 10,
       flex: 1,
       flexDirection: 'row',
       flexWrap: 'wrap',
