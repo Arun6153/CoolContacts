@@ -16,12 +16,15 @@ export const Navigation = () => {
                options={{
                   title: 'Contact List',
                   headerTintColor: NavigationStyles.header.color,
+                  headerTitleAlign: 'center',
                }}
                component={ContactList}
             />
             <Stack.Screen
                name="contact-form"
-               options={{ title: 'Add Contact' }}
+               options={{
+                  title: 'Add Contact',
+               }}
                component={ContactForm}
             />
          </Stack.Navigator>
@@ -31,7 +34,7 @@ export const Navigation = () => {
 
 const NavigationStyles = StyleSheet.create({
    header: {
-      fontFamily: 'Arial',
+      // fontFamily: 'sans-serif',
       color: '2d2d2d',
    },
 });

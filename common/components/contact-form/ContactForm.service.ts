@@ -62,6 +62,9 @@ export const contactDetailsSubmit = async (
 
       return true;
    } catch (err) {
+      console.log('====================================');
+      console.log(err);
+      console.log('====================================');
       return false;
    }
 };

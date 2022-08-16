@@ -7,14 +7,17 @@ import {
    ScrollView,
    SafeAreaView,
    RefreshControl,
+   Platform,
 } from 'react-native';
 import { SearchBar } from '../../common/widgets/search-bar/SearchBar';
 import { ContactItem } from './contact/ContactItem';
 import { getContactList } from './ContactList.service';
+import * as Contacts from 'expo-contacts';
 
 export const ContactList = ({ route, navigation }: any) => {
    const [contacts, setContacts] = useState<Contact[]>([]);
    const [refreshing, setRefreshing] = useState<boolean>(false);
+   const isIOS = Platform.OS === 'ios';
    const isData = !!contacts;
    const _routes = route?.params;
 
@@ -36,9 +39,13 @@ export const ContactList = ({ route, navigation }: any) => {
    };
 
    const addNewContact = () => {
+      // if (isIOS) {
       navigation.navigate('contact-form', {
          contactDetails: { contact: null, isEdit: false },
       });
+      // } else {
+      //    Contacts.addContactAsync({}:any);
+      // }
    };
 
    return (
@@ -51,17 +58,19 @@ export const ContactList = ({ route, navigation }: any) => {
                   Contacts
                </Text>
             </View>
-            <View style={ContactListStyles.mainLabelViewColumn}>
-               <Text
-                  onPress={() => addNewContact()}
-                  style={[
-                     ContactListStyles.mainLabelColumn,
-                     ContactListStyles.mainSubLabel,
-                  ]}
-               >
-                  +ADD
-               </Text>
-            </View>
+            {isIOS && (
+               <View style={ContactListStyles.mainLabelViewColumn}>
+                  <Text
+                     onPress={() => addNewContact()}
+                     style={[
+                        ContactListStyles.mainLabelColumn,
+                        ContactListStyles.mainSubLabel,
+                     ]}
+                  >
+                     +ADD
+                  </Text>
+               </View>
+            )}
          </View>
 
          <View style={{ flex: 1 }}>
@@ -109,7 +118,7 @@ const ContactListStyles = StyleSheet.create({
    },
    mainLabelColumn: {
       width: '100%',
-      fontFamily: 'Arial',
+      // fontFamily: 'sans-serif',
    },
    mainLabel: {
       fontSize: 20,
